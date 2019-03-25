@@ -1,0 +1,78 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: orderer
+spec:
+  ports:
+  - port: 7050
+    targetPort: 7050
+  type: NodePort
+  selector:
+    app: orderer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderer
+spec:
+  selector:
+    matchLabels:
+      app: orderer
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: orderer
+    spec:
+      containers:
+      - image: hyperledger/fabric-orderer:1.4.0
+        name: orderer
+        imagePullPolicy: Never
+        workingDir: /opt/gopath/src/github.com/hyperledger/fabric
+        command: ["orderer"]
+        env:
+        - name: FABRIC_LOGGING_SPEC
+          value: DEBUG
+        - name: ORDERER_GENERAL_GENESISFILE
+          value: /var/hyperledger/orderer/orderer.genesis.block
+        - name: ORDERER_GENERAL_GENESISMETHOD
+          value: file
+        - name: ORDERER_GENERAL_LISTENADDRESS
+          value: 0.0.0.0
+        - name: ORDERER_GENERAL_LOCALMSPDIR
+          value: /var/hyperledger/orderer/msp
+        - name: ORDERER_GENERAL_LOCALMSPID
+          value: OrdererMSP
+        - name: ORDERER_GENERAL_TLS_CERTIFICATE
+          value: /var/hyperledger/orderer/tls/server.crt
+        - name: ORDERER_GENERAL_TLS_ENABLED
+          value: "true"
+        - name: ORDERER_GENERAL_TLS_PRIVATEKEY
+          value: /var/hyperledger/orderer/tls/server.key
+        - name: ORDERER_GENERAL_TLS_ROOTCAS
+          value: '[/var/hyperledger/orderer/tls/ca.crt]'
+        - name: ORDERER_KAFKA_TOPIC_REPLICATIONFACTOR
+          value: "1"
+        - name: ORDERER_KAFKA_VERBOSE
+          value: "true"
+        - name: CORE_PEER_TLS_SERVERHOSTOVERRIDE
+          value: orderer.example.com
+        ports:
+        - containerPort: 7050
+          name: orderer
+        volumeMounts:
+        - name: data
+          mountPath: /var/hyperledger/production/orderer
+          subPath: orderer
+        - name: data
+          mountPath: /var/hyperledger/orderer/orderer.genesis.block
+          subPath: Blockchain/fabric/fabric-kubernetes/channel-artifacts/genesis.block
+        - name: data
+          mountPath: /var/hyperledger/orderer
+          subPath: Blockchain/fabric/fabric-kubernetes/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: data-pvc

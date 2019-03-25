@@ -1,0 +1,5 @@
+scp -r -i $(minikube ssh-key) /home/debut/Blockchain/1.4/config/* docker@$(minikube ip):/home/docker/certificates/yaml
+scp -r -i $(minikube ssh-key) crypto-config docker@$(minikube ip):/home/docker/certificates
+scp -r -i $(minikube ssh-key) channel-artifacts docker@$(minikube ip):/home/docker/certificates
+scp -r -i $(minikube ssh-key) chaincode docker@$(minikube ip):/home/docker/data
+scp -r -i $(minikube ssh-key) scripts docker@$(minikube ip):/home/docker/data/scripts
