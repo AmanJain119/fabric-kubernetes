@@ -33,6 +33,7 @@ spec:
       labels:
         app: peer0
     spec:
+      nodeName: test-instance
       containers:
       - image: hyperledger/fabric-peer:1.4.0
         name: peer0
@@ -69,7 +70,9 @@ spec:
         - name: FABRIC_LOGGING_SPEC
           value: DEBUG
         - name: CORE_PEER_CHAINCODELISTENADDRESS
-          value: "0.0.0.0:7052"
+          value: 0.0.0.0:7052
+        - name: CORE_PEER_ADDRESSAUTODETECT
+          value: "true"
         - name: CORE_PEER_TLS_SERVERHOSTOVERRIDE
           value: peer0.org1.example.com
         ports:
@@ -84,10 +87,10 @@ spec:
           mountPath: /host/var/run/
         - name: data
           mountPath: /etc/hyperledger/fabric/msp
-          subPath: Blockchain/fabric/fabric-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp
+          subPath: fabric-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp
         - name: data
           mountPath: /etc/hyperledger/fabric/tls
-          subPath: Blockchain/fabric/fabric-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls
+          subPath: fabric-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls
       volumes:
       - name: data
         persistentVolumeClaim:

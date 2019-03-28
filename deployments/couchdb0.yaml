@@ -26,9 +26,10 @@ spec:
       labels:
         app: couchdb0
     spec:
+      nodeName: test-instance
       containers:
       - image: hyperledger/fabric-couchdb
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         name: couchdb0
         env:
         - name: COUCHDB_USER

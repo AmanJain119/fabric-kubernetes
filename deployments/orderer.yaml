@@ -26,6 +26,7 @@ spec:
       labels:
         app: orderer
     spec:
+      nodeName: test-instance
       containers:
       - image: hyperledger/fabric-orderer:1.4.0
         name: orderer
@@ -68,10 +69,10 @@ spec:
           subPath: orderer
         - name: data
           mountPath: /var/hyperledger/orderer/orderer.genesis.block
-          subPath: Blockchain/fabric/fabric-kubernetes/channel-artifacts/genesis.block
+          subPath: fabric-kubernetes/channel-artifacts/genesis.block
         - name: data
           mountPath: /var/hyperledger/orderer
-          subPath: Blockchain/fabric/fabric-kubernetes/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com
+          subPath: fabric-kubernetes/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com
       volumes:
       - name: data
         persistentVolumeClaim:

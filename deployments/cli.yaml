@@ -13,6 +13,7 @@ spec:
       labels:
         app: cli
     spec:
+      nodeName: test-instance
       containers:
       - image: hyperledger/fabric-tools:1.4.0
         name: cli
@@ -47,18 +48,18 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /opt/gopath/src/github.com/chaincode
-          subPath: Blockchain/fabric/fabric-kubernetes/chaincode
+          subPath: fabric-kubernetes/chaincode
         - name: docker
           mountPath: /host/var/run/
         - name: data
           mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
-          subPath: Blockchain/fabric/fabric-kubernetes/crypto-config
+          subPath: fabric-kubernetes/crypto-config
         - name: data
           mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
-          subPath: Blockchain/fabric/fabric-kubernetes/channel-artifacts
+          subPath: fabric-kubernetes/channel-artifacts
         - name: data
           mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
-          subPath: Blockchain/fabric/fabric-kubernetes/scripts
+          subPath: fabric-kubernetes/scripts
       volumes:
       - name: data
         persistentVolumeClaim:

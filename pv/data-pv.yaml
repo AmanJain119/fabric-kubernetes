@@ -11,7 +11,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: "/hosthome/debut"
+    path: "/home/test/"
 
 ---
 apiVersion: v1
